@@ -1,0 +1,130 @@
+<section>
+  <div class="row">
+    <ng-container *ngIf="isDataLoaded == false">
+      <p>Loading products, please wait..!</p>
+    </ng-container>
+    <ng-container *ngIf="isDataLoaded == true">
+      <div class="col-12">
+        <h2 class="content-title">
+          Products
+        </h2>
+        <ngx-slick-carousel
+          class="carousel"
+          #slickModal="slick-carousel"
+          [config]="slideConfig"
+        >
+          <div ngxSlickItem *ngFor="let item of products" class="slide">
+            <mat-card class="example-card p-card">
+              <mat-card-header>
+                <mat-card-title
+                  class="text-truncate cursor-pointer"
+                  [routerLink]="['/products/product-details', item.id]" [title]="item?.title"
+                  >{{ item?.title }}</mat-card-title
+                >
+                <mat-card-subtitle>{{ item?.brand }}</mat-card-subtitle>
+                <ng-container *ngIf="item.isAddedToWishlist; else notAddedToWishlist">
+                  <button mat-button (click)="cartService.removeFromWishlistProduct(item)">
+                    <span class="material-icons"> favorite </span>
+                  </button>
+                </ng-container>
+                <ng-template #notAddedToWishlist>
+                  <button mat-button (click)="cartService.addToWishlistProduct(item)">
+                    <span class="material-icons add-to-wishlist-symbol"> favorite </span>
+                  </button>
+                </ng-template>
+              </mat-card-header>
+              <img
+                (click)="utilityService.openCarouselDialog(item.images)"
+                mat-card-image
+                class="cursor-pointer"
+                [src]="item.thumbnail"
+                alt="Photo of a Shiba Inu"
+              />
+              <mat-card-content>
+                <div class="p-price">
+                  {{ item.price | numberRound | currencyINR }}
+                  <span class="p-actual-price">
+                    {{
+                      utilityService.getActualPrice(
+                        item.price,
+                        item.discountPercentage
+                      ) | currencyINR
+                    }}
+                  </span>
+                  <span class="p-price-off">
+                    {{ (item.discountPercentage | numberRound) + "% off" }}
+                  </span>
+                </div>
+                <p class="text-truncate">
+                  {{ item.description }}
+                </p>
+              </mat-card-content>
+              <mat-card-actions
+                class="d-flex"
+                [ngClass]="
+                  item.isAddedToCart
+                    ? 'justify-content-between'
+                    : 'justify-content-end'
+                "
+              >
+                <ng-container *ngIf="item.isAddedToCart; else notAdded">
+                  <button mat-button routerLink="/cart">
+                    Go to cart
+                    <span class="material-icons"> call_missed_outgoing </span>
+                  </button>
+                  <button mat-button (click)="cartService.removeProduct(item)">
+                    Remove
+                    <span class="material-icons"> remove_circle </span>
+                  </button>
+                </ng-container>
+                <ng-template #notAdded>
+                  <button mat-button (click)="cartService.addProduct(item)">
+                    <span class="material-icons"> add_shopping_cart </span>
+                    Add to cart
+                  </button>
+                </ng-template>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </ngx-slick-carousel>
+      </div>
+
+      <div class="col-12">
+        <h2 class="content-title">
+          Posts
+        </h2>
+        <ngx-slick-carousel
+          class="carousel"
+          #slickModal="slick-carousel"
+          [config]="slideConfig"
+        >
+          <div ngxSlickItem *ngFor="let item of posts" class="slide">
+            <mat-card class="example-card">
+              <mat-card-header>
+                <mat-card-title class="text-truncate cursor-pointer" (click)="utilityService.openDialog(item,'post-gallery')">{{
+                  item?.title
+                }}</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <p class="text-truncate">
+                  {{ item.body }}
+                </p>
+                <p>
+                  Tags : 
+                </p>
+                <mat-chip-list aria-label="Fish selection">
+                  <mat-chip *ngFor="let tag of item.tags | slice:0:2" color="accent" selected>
+                    {{tag | titlecase}}
+                  </mat-chip>
+                </mat-chip-list>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </ngx-slick-carousel>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="isDataLoaded == null">
+      <p>No products found..!</p>
+    </ng-container>
+  </div>
+</section>

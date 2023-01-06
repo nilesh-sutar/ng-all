@@ -1,0 +1,110 @@
+<section>
+  <div class="row">
+    <ng-container *ngIf="isDataLoaded == false">
+      <p>Loading products, please wait..!</p>
+    </ng-container>
+    <ng-container *ngIf="isDataLoaded == true">
+      <div class="col-md-12">
+        <mat-card class="example-card p-card">
+          <div class="row">
+            <div class="col-md-4">
+              <img
+                (click)="utilityService.openCarouselDialog(product.images)"
+                mat-card-image
+                class="p-3 cursor-pointer"
+                [src]="product.thumbnail"
+                alt="Photo of a Shiba Inu"
+              />
+              <div class="thumbnail-row">
+                <ng-container *ngFor="let item of product.images">
+                  <img
+                    [class.active]="product.thumbnail == item"
+                    (click)="changeImage(item)"
+                    class="p-3 cursor-pointer"
+                    [src]="item"
+                    alt="Photo of a Shiba Inu"
+                  />
+                </ng-container>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <mat-card-header class="p-header">
+                <mat-card-title [title]="product.title">
+                  {{ product.title }}
+                </mat-card-title>
+                <mat-card-subtitle>{{ product.brand }}</mat-card-subtitle>
+                <ng-container *ngIf="product.isAddedToWishlist; else notAddedToWishlist">
+                  <button mat-button (click)="cartService.removeFromWishlistProduct(product)">
+                    <span class="material-icons"> favorite </span>
+                  </button>
+                </ng-container>
+                <ng-template #notAddedToWishlist>
+                  <button mat-button (click)="cartService.addToWishlistProduct(product)">
+                    <span class="material-icons add-to-wishlist-symbol"> favorite </span>
+                  </button>
+                </ng-template>
+              </mat-card-header>
+              <mat-card-content>
+                <p class="p-3">
+                  <mat-chip-list aria-label="Fish selection">
+                    <mat-chip>{{ product.category }}</mat-chip>
+                  </mat-chip-list>
+                </p>
+                <div class="p-price">
+                  {{ product.price | numberRound | currencyINR }}
+                  <span class="p-actual-price">
+                    {{
+                      utilityService.getActualPrice(product.price, product.discountPercentage) | currencyINR
+                    }}
+                  </span>
+                  <span class="p-price-off">
+                    {{ (product.discountPercentage | numberRound) + "% off" }}
+                  </span>
+                </div>
+                <p class="p-desc">
+                  {{ product.description }}
+                </p>
+                <p class="p-rating">
+                  <span class="pe-3"> Rating : </span>
+                  <span *ngFor="let item of ratingArr; let i = index">
+                    <mat-icon>
+                      {{ showIcon(i, product.rating) }}
+                    </mat-icon>
+                  </span>
+                </p>
+              </mat-card-content>
+              <mat-card-actions class="d-flex justify-content-between">
+                <ng-container *ngIf="product.isAddedToCart; else notAdded">
+                  <button mat-button routerLink="/cart">
+                    Go to cart
+                    <span class="material-icons"> call_missed_outgoing </span>
+                  </button>
+                  <button
+                    mat-button
+                    (click)="cartService.removeProduct(product)"
+                  >
+                    Remove
+                    <span class="material-icons"> remove_circle </span>
+                  </button>
+                </ng-container>
+                <ng-template #notAdded>
+                  <button mat-button routerLink="/products">
+                    <span class="material-icons"> arrow_back_ios </span>
+                    Back to products
+                  </button>
+                  <button mat-button (click)="cartService.addProduct(product)">
+                    <span class="material-icons"> add_shopping_cart </span>
+                    Add to cart
+                  </button>
+                </ng-template>
+              </mat-card-actions>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="isDataLoaded == null">
+      <p>No data found..!</p>
+    </ng-container>
+  </div>
+</section>

@@ -1,0 +1,107 @@
+// login-register popup style starts
+.login-signup-form {
+    width: 950px;
+    max-height: none;
+
+    .mat-form-field-appearance-outline .mat-form-field-infix {
+        padding: 5px 0 15px 0;
+    }
+
+    .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+        color: #02b4c4;
+    }
+
+    .mat-dialog-container {
+        border-radius: 15px;
+        padding: 0;
+    }
+}
+
+.auth-dialogwrap {
+    display: flex;
+
+    .login-img {
+        width: 240px;
+
+        img {
+            width: 100%;
+        }
+    }
+
+    .login-content {
+        width: calc(100% - 240px);
+        display: flex;
+        position: relative;
+        align-items: center;
+        justify-content: center;
+
+        .close-dialog {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 20px;
+            color: #333;
+        }
+    }
+
+    .register-btns-wrap {
+        width: 60%;
+    }
+}
+
+.login-btnsmain,
+.register-btn-content {
+    text-align: center;
+
+    .btn {
+        width: 100%;
+    }
+
+    .chooseOr {
+        margin-bottom: 0;
+        margin: 20px 0;
+        display: block;
+    }
+
+    h5 {
+        text-align: left;
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 30px;
+    }
+
+    h6 {
+        text-align: left;
+        font-size: 14px;
+        margin-top: 30px;
+        text-align: left;
+
+        a {
+            margin-left: 15px;
+        }
+    }
+}
+
+.student-acc-formwrap {
+    padding: 0 70px;
+}
+
+.student-acc-formwrap {
+    .create-acc-title {
+        font-size: 16px;
+        color: #333;
+        margin-top: 15px;
+        font-weight: 500;
+    }
+
+    .require-allfields {
+        display: block;
+        margin-bottom: 20px;
+    }
+}
+
+.login-formwrap.changeNumber {
+    width: 100%;
+}
+
+// login-register popup style ends
